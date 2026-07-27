@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{# Дүкөндөгү товарды өчүрүүнү ырастоочу интерфейске жооп берет. #}
+
+{% block title %}
+    Удаление товара
+{% endblock %}
+
+{% block content %}
+<section class="form-page">
+    <div class="container narrow">
+        <div class="form-card confirm">
+            <h1>Удалить товар?</h1>
+
+            <p>
+                Товар «{{ product.name }}» будет удалён.
+                Это действие нельзя отменить.
+            </p>
+
+            <form method="post">
+                {% csrf_token %}
+
+                <button class="btn danger" type="submit">
+                    Да, удалить
+                </button>
+
+                <a
+                    class="btn outline"
+                    href="{% url 'product_detail' product.slug %}"
+                >
+                    Отмена
+                </a>
+            </form>
+        </div>
+    </div>
+</section>
+{% endblock %}

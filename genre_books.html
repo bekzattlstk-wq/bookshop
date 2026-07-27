@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{# Тандалган жанрга тиешелүү китептерди чыпкалап көрсөтүүчү баракка жооп берет. #}
+{% block title %}{{ genre.name }} — Чилистен{% endblock %}
+{% block content %}
+<section class="genre-results-hero">
+  <div class="container">
+    <span class="kicker">Книги по жанру</span>
+    <h1>{{ genre.name }}</h1>
+    <p>Истории и идеи, собранные специально для вашего настроения.</p>
+    <div class="genre-result-stat"><b>{{ books|length }}</b><span>книг найдено</span></div>
+  </div>
+</section>
+<section class="section genre-results-page new-style-books" id="new-books">
+  <div class="container">
+    <div class="inner-section-heading">
+      <div><span>Выбранный жанр</span><h2>{{ genre.name }}</h2></div>
+      <a class="all-genres-link" href="{% url 'book_list' %}">Все книги →</a>
+    </div>
+    <div class="book-grid">
+      {% for book in books %}
+        {% include 'app/_book_card.html' %}
+      {% empty %}
+        <div class="premium-empty"><span>◇</span><h2>В этом жанре пока нет книг</h2><p>Посмотрите другие разделы библиотеки.</p><a href="{% url 'book_list' %}">Открыть каталог →</a></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

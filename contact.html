@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{# Байланыш маалыматы жана контакт формасы бар баракка жооп берет. #}
+{% block title %}Контакты — Чилистен{% endblock %}
+{% block content %}
+<section class="inner-hero contact-hero">
+  <div class="container inner-hero-content">
+    <span class="kicker">Всегда на связи</span>
+    <h1>Есть вопрос или книжная идея?</h1>
+    <p>Напишите нам — поможем с выбором книги, заказом или работой с библиотекой.</p>
+  </div>
+</section>
+<section class="section contact-premium-page">
+  <div class="container contact-premium-grid">
+    <div>
+      <div class="inner-section-heading compact-heading"><div><span>Свяжитесь с нами</span><h2>Выберите удобный способ</h2></div></div>
+      <div class="contact-cards">
+        <a href="mailto:hello@bookspace.kg"><span>✉</span><div><small>Электронная почта</small><b>hello@bookspace.kg</b><em>Написать письмо →</em></div></a>
+        <article><span>⌖</span><div><small>Наш адрес</small><b>Бишкек, Кыргызстан</b><em>Будем рады встрече</em></div></article>
+        <article><span>◷</span><div><small>Время работы</small><b>Пн–Пт, 09:00–18:00</b><em>Отвечаем в рабочее время</em></div></article>
+      </div>
+    </div>
+    <aside class="contact-story">
+      <span class="quote-mark">“</span>
+      <blockquote>Книги — корабли мысли, странствующие по волнам времени.</blockquote>
+      <div><b>Фрэнсис Бэкон</b><small>О силе чтения</small></div>
+      <img src="/static/images/mantis-logo.png" alt="" aria-hidden="true">
+    </aside>
+  </div>
+</section>
+{% endblock %}

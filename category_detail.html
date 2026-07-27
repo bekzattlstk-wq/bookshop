@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{# Дүкөндөгү тандалган категорияга тиешелүү товарларды көрсөтүүгө жооп берет. #}
+
+{% block title %}
+    {{ category.name }} — BookSpace
+{% endblock %}
+
+{% block content %}
+<section class="page-head">
+    <div class="container">
+        <span class="kicker light-text">Категория</span>
+        <h1>{{ category.name }}</h1>
+    </div>
+</section>
+
+<section class="section">
+    <div class="container">
+        <div class="product-grid">
+            {% for product in products %}
+                <article class="product-card">
+                    {% if product.image %}
+                        <img
+                            src="{{ product.image.url }}"
+                            alt="{{ product.name }}"
+                        >
+                    {% endif %}
+
+                    <h3>
+                        <a href="{% url 'product_detail' product.slug %}">
+                            {{ product.name }}
+                        </a>
+                    </h3>
+
+                    <strong>{{ product.price }} сом</strong>
+                </article>
+            {% empty %}
+                <p>В этой категории пока нет товаров.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

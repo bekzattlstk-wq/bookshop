@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load static %}
+{# Негизги китеп каталогунун башкы блогуна, издөөгө жана китеп карточкаларына жооп берет. #}
+{% block title %}Каталог книг — Чилистен{% endblock %}
+{% block content %}
+<section class="page-head catalog-hero">
+  <img class="catalog-brand-watermark" src="{% static 'images/mantis-logo.png' %}" alt="" aria-hidden="true">
+  <div class="container head-row">
+    <div class="catalog-copy">
+      <span class="kicker light-text">Библиотека «Чилистен»</span>
+      <h1>Каталог книг</h1>
+      <p>Истории, знания и идеи для вашей личной коллекции.</p>
+      <div class="catalog-stat"><b>{{ books|length }}</b><span>книг опубликовано</span></div>
+    </div>
+    {% if user.is_staff %}<a class="btn lime-btn" href="{% url 'book_create' %}"><span>＋</span> Добавить книгу</a>{% endif %}
+  </div>
+</section>
+<section class="section catalog-page">
+  <div class="container">
+    <form class="search-form catalog-search" action="{% url 'search' %}" method="get"><span>⌕</span><input name="q" type="search" placeholder="Найти книгу по названию или описанию…" aria-label="Поиск"><button class="btn primary">Найти</button></form>
+    <div class="book-grid catalog-book-grid">{% for book in books %}{% include 'app/_book_card.html' %}{% empty %}<div class="empty"><b>Книги пока не добавлены</b><p>Добавьте первую книгу в каталог.</p></div>{% endfor %}</div>
+  </div>
+</section>
+{% endblock %}

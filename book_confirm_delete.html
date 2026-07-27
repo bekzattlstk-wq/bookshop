@@ -1,0 +1,6 @@
+{% extends 'base.html' %}
+{# Китепти өчүрүүнү ырастоочу интерфейске жооп берет. #}
+{% block title %}Удаление книги — BookSpace{% endblock %}
+{% block content %}
+<section class="form-page"><div class="container narrow"><div class="form-card confirm"><i>!</i><span class="kicker">Подтверждение</span><h1>Удалить книгу?</h1><p>Книга <strong>«{{ book.title }}»</strong> будет удалена без возможности восстановления.</p><form method="post">{% csrf_token %}<button class="btn danger" type="submit">Да, удалить</button><a class="btn outline" href="{% url 'book_detail' book.slug %}">Отмена</a></form></div></div></section>
+{% endblock %}

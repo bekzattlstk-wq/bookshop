@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{# Китеп кошуу жана редакциялоо формасынын интерфейсине жооп берет. #}
+{% block title %}{% if form.instance.pk %}Редактирование{% else %}Новая книга{% endif %} — BookSpace{% endblock %}
+{% block content %}
+<section class="form-page"><div class="container narrow"><a class="arrow-link" href="{% url 'book_list' %}">← Вернуться в каталог</a>
+  <div class="form-card"><span class="kicker">{% if form.instance.pk %}Редактирование{% else %}Новая публикация{% endif %}</span><h1>{% if form.instance.pk %}Изменить книгу{% else %}Добавить книгу{% endif %}</h1><p>Заполните информацию о книге. Данные можно будет изменить позже.</p>
+    <form method="post" enctype="multipart/form-data" class="styled-form">{% csrf_token %}
+      {% for field in form %}
+        <div class="field {% if field.field.widget.input_type == 'checkbox' %}check{% endif %} {% if field.name == 'genres' %}genre-field{% endif %}">
+          {% if field.name == 'genres' %}
+            <div class="genre-field-heading">
+              <span class="genre-field-icon">◈</span>
+              <div><label for="{{ field.id_for_label }}">{{ field.label }}</label><small>Выберите один или несколько жанров</small></div>
+            </div>
+          {% else %}
+            <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {% endif %}
+          {{ field }}
+          {% for error in field.errors %}<small class="error">{{ error }}</small>{% endfor %}
+        </div>
+      {% endfor %}
+      <div class="form-buttons"><button class="btn primary big" type="submit">{% if form.instance.pk %}Сохранить изменения{% else %}Опубликовать книгу{% endif %}</button><a class="btn outline" href="{% url 'book_list' %}">Отмена</a></div>
+    </form>
+  </div>
+</div></section>
+{% endblock %}

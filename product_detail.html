@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{# Дүкөндөгү товардын толук маалыматы жана сатып алуу аракеттери бар баракка жооп берет. #}
+
+{% block title %}
+    {{ product.name }} — BookSpace
+{% endblock %}
+
+{% block content %}
+<section class="section shop-product-detail">
+    <div class="container detail-grid shop-product-grid">
+        <div class="detail-cover">
+            {% if product.image %}
+                <img
+                    src="{{ product.image.url }}"
+                    alt="{{ product.name }}"
+                >
+            {% else %}
+                <div class="product-placeholder">
+                    Нет изображения
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="purchase-panel">
+            <a href="{% url 'category_detail' product.category.slug %}">
+                {{ product.category.name }}
+            </a>
+
+            <h1>{{ product.name }}</h1>
+
+            <div class="description">
+                {{ product.description|linebreaks }}
+            </div>
+
+            <div class="purchase-price"><span>Цена</span><h2>{{ product.price }} <small>сом</small></h2></div>
+
+            {% if product.is_available %}
+                <p class="available">В наличии</p>
+            {% else %}
+                <p class="unavailable">Нет в наличии</p>
+            {% endif %}
+
+            <div class="commerce-actions detail-commerce">
+                <button class="action-btn cart-btn" type="button" data-cart-id="product-{{ product.id }}" data-title="{{ product.name }}" data-price="{{ product.price }}" data-url="{% url 'product_detail' product.slug %}">Добавить в корзину</button>
+                <button class="icon-action favorite-btn" type="button" data-favorite-id="product-{{ product.id }}" data-title="{{ product.name }}" data-price="{{ product.price }}" data-url="{% url 'product_detail' product.slug %}" aria-label="Добавить в избранное">♡</button>
+            </div>
+            {% if product.is_available %}
+            <button class="buy-now-btn" type="button" data-buy-now data-cart-id="product-{{ product.id }}" data-title="{{ product.name }}" data-price="{{ product.price }}" data-url="{% url 'product_detail' product.slug %}"><span>⚡</span> Купить сейчас</button>
+            {% endif %}
+            <div class="purchase-benefits">
+                <span><b>✓</b> Безопасное оформление</span>
+                <span><b>→</b> Быстрая доставка</span>
+                <span><b>↻</b> Простой возврат</span>
+            </div>
+
+            <div class="detail-buttons">
+                {% if user.is_staff %}
+                <a
+                    class="btn outline"
+                    href="{% url 'product_update' product.slug %}"
+                >
+                    Редактировать
+                </a>
+
+                <a
+                    class="btn danger"
+                    href="{% url 'product_delete' product.slug %}"
+                >
+                    Удалить
+                </a>
+                {% endif %}
+
+                <a href="{% url 'product_list' %}">
+                    Вернуться в магазин
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

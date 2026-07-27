@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{# Китеп дүкөнүнүн башкы блогуна, категорияларына жана товарлар тизмесине жооп берет. #}
+
+{% block title %}
+    Магазин — BookSpace
+{% endblock %}
+
+{% block content %}
+<section class="page-head store-hero">
+    <div class="container head-row store-hero-row">
+        <div class="store-hero-copy">
+            <span class="kicker light-text">Время выбрать свою историю</span>
+            <h1>Книжный магазин</h1>
+            <p>Откройте историю, которая увлечёт с первой страницы и надолго останется с вами.</p>
+        </div>
+
+        {% if user.is_staff %}
+        <div class="store-admin-actions">
+            <a class="btn lime-btn" href="{% url 'product_create' %}">+ Добавить товар</a>
+            <form class="quiet-delete-all" method="post" action="{% url 'products_delete_all' %}" onsubmit="return confirm('Удалить все товары магазина? Это действие нельзя отменить.');">
+                {% csrf_token %}<button type="submit">Удалить все товары</button>
+            </form>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="store-benefits" aria-label="Преимущества магазина">
+    <div class="container store-benefits-grid">
+        <article><span>✓</span><div><b>Проверенные книги</b><small>Отобранные издания</small></div></article>
+        <article><span>→</span><div><b>Быстрая доставка</b><small>Бережно и точно в срок</small></div></article>
+        <article><span>₽</span><div><b>Удобная оплата</b><small>Простое оформление заказа</small></div></article>
+        <article><span>↻</span><div><b>Лёгкий возврат</b><small>Поддержка на каждом этапе</small></div></article>
+    </div>
+</section>
+
+<section class="section store-catalog-section" id="shop-catalog">
+    <div class="container catalog-layout">
+        <aside class="catalog-sidebar">
+            <span class="sidebar-kicker">Навигация</span>
+            <h2>Все товары</h2>
+            <div class="category-list">
+            <a href="{% url 'product_list' %}">
+                Все категории
+            </a>
+
+            {% for category in categories %}
+                <a href="{% url 'category_detail' category.slug %}">
+                    {{ category.name }}
+                </a>
+            {% endfor %}
+            </div>
+        </aside>
+        <div class="catalog-main">
+          <div class="catalog-heading"><div><span>Коллекция магазина</span><h2>Все товары</h2></div><b>{{ products|length }} позиций</b></div>
+          <form class="catalog-inline-search" action="{% url 'search' %}" method="get"><input type="search" name="q" placeholder="Найти книгу…"><button type="submit">⌕</button></form>
+          <div class="product-grid">
+            {% for product in products %}
+                <article class="product-card">
+                    <a class="product-image" href="{% url 'product_detail' product.slug %}">
+                        {% if product.is_available %}<span class="stock-badge">В наличии</span>{% else %}<span class="stock-badge sold">Нет в наличии</span>{% endif %}
+                        {% if product.image %}
+                            <img
+                                src="{{ product.image.url }}"
+                                alt="{{ product.name }}"
+                            >
+                        {% else %}
+                            <div class="product-placeholder">
+                                Нет изображения
+                            </div>
+                        {% endif %}
+                    </a>
+
+                    <div class="product-info">
+                        <span class="product-category">{{ product.category.name }}</span>
+
+                        <h3>
+                            <a href="{% url 'product_detail' product.slug %}">
+                                {{ product.name }}
+                            </a>
+                        </h3>
+
+                        <p>
+                            {{ product.description|truncatewords:15 }}
+                        </p>
+
+                        <div class="product-bottom">
+                            <strong>{{ product.price }} <small>сом</small></strong>
+                            <a aria-label="Открыть {{ product.name }}" href="{% url 'product_detail' product.slug %}">→</a>
+                        </div>
+                        <div class="commerce-actions">
+                          <button class="action-btn cart-btn" type="button" data-cart-id="product-{{ product.id }}" data-title="{{ product.name }}" data-price="{{ product.price }}" data-url="{% url 'product_detail' product.slug %}">В корзину</button>
+                          <button class="icon-action favorite-btn" type="button" data-favorite-id="product-{{ product.id }}" data-title="{{ product.name }}" data-price="{{ product.price }}" data-url="{% url 'product_detail' product.slug %}" aria-label="Добавить в избранное">♡</button>
+                        </div>
+                    </div>
+                </article>
+            {% empty %}
+                <div class="empty"><b>Витрина пока пуста</b><p>Товары скоро появятся в книжном магазине.</p>{% if user.is_staff %}<a class="btn primary" href="{% url 'product_create' %}">Добавить товар</a>{% endif %}</div>
+            {% endfor %}
+          </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

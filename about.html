@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{# «Долбоор жөнүндө» барагынын мазмунуна жана интерфейсине жооп берет. #}
+{% block title %}О проекте — Чилистен{% endblock %}
+{% block content %}
+<section class="inner-hero about-premium-hero">
+  <div class="container inner-hero-content">
+    <span class="kicker">О проекте «Чилистен»</span>
+    <h1>Пространство для людей, которые любят книги</h1>
+    <p>Мы соединяем интересные истории, удобный поиск и тёплое книжное сообщество в одном месте.</p>
+  </div>
+</section>
+<section class="section about-story-section">
+  <div class="container about-story-grid">
+    <div class="about-story-copy">
+      <span>Наша история</span>
+      <h2>Помогаем каждой книге найти своего читателя</h2>
+      <p>«Чилистен» создан, чтобы находить интересные произведения, делиться рекомендациями и собирать живую библиотеку вместе.</p>
+      <p>Мы верим: хорошая книга всегда приходит вовремя — нужно только помочь читателю её заметить.</p>
+      <a href="{% url 'book_list' %}">Исследовать каталог →</a>
+    </div>
+    <div class="about-brand-card">
+      <img src="/static/images/mantis-logo.png" alt="">
+      <strong>Чилистен</strong>
+      <span>Книги, которые остаются с вами</span>
+    </div>
+  </div>
+</section>
+<section class="section values-premium-section">
+  <div class="container">
+    <div class="inner-section-heading"><div><span>То, во что мы верим</span><h2>Наши ценности</h2></div></div>
+    <div class="values-premium">
+      <article><b>01</b><span>✦</span><h3>Любовь к чтению</h3><p>Каждая книга — возможность увидеть мир иначе и открыть новую мысль.</p></article>
+      <article><b>02</b><span>⌕</span><h3>Простота выбора</h3><p>Понятный каталог, быстрый поиск и только нужная информация.</p></article>
+      <article><b>03</b><span>∞</span><h3>Живое сообщество</h3><p>Коллекция растёт вместе с читателями, их идеями и рекомендациями.</p></article>
+    </div>
+  </div>
+</section>
+{% endblock %}

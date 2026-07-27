@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{# Жаңы жарыяланган китептердин «Новинки» барагына жооп берет. #}
+{% block title %}Новинки — Чилистен{% endblock %}
+{% block content %}
+<section class="section new-style-books" id="new-books">
+  <div class="container">
+    <div class="section-title power-heading arrivals-power-heading">
+      <div>
+        <span class="kicker">Только поступили</span>
+        <h1>Новинки</h1>
+        <p class="section-subtitle">Восемь последних опубликованных книг.</p>
+      </div>
+      <a class="arrow-link" href="{% url 'home' %}">Перейти на главную →</a>
+    </div>
+    <div class="book-grid">
+      {% for book in books %}
+        {% include 'app/_book_card.html' %}
+      {% empty %}
+        <div class="empty">
+          <b>Новинок пока нет</b>
+          <p>Добавьте первую книгу в библиотеку.</p>
+          {% if user.is_staff %}<a class="btn primary" href="{% url 'book_create' %}">Добавить книгу</a>{% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

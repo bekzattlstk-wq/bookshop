@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{# Башкы беттеги китептер, жарнамалык блоктор жана сайттын артыкчылыктары көрсөтүлгөн интерфейске жооп берет. #}
+{% block title %}Книжный дом — найдите любимую книгу{% endblock %}
+{% block content %}
+{% if books %}
+<section class="section home-library new-style-books" id="all-books">
+  <div class="container">
+    <div class="section-title power-heading library-power-heading">
+      <div><span class="kicker">Главная библиотека</span><h2>Все книги</h2><p class="section-subtitle">Все опубликованные книги собраны в одном месте.</p></div>
+      <a class="arrow-link" href="{% url 'book_list' %}">Открыть каталог →</a>
+    </div>
+    <div class="book-grid">
+      {% for book in books %}
+        {% include 'app/_book_card.html' %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+<section class="promo-section" id="promotions">
+  <div class="container promo-grid">
+    <article class="promo-card promo-sale">
+      <div class="promo-copy">
+        <span class="promo-label">Акция</span>
+        <h2>Книги недели</h2>
+        <p>Покупайте две книги и получайте третью в подарок.</p>
+        <a class="promo-link" href="{% url 'book_list' %}">Выбрать книги <span>→</span></a>
+      </div>
+      <strong class="promo-mark">2+1</strong>
+    </article>
+    <article class="promo-card promo-discount">
+      <div class="promo-copy">
+        <span class="promo-label">Скидки</span>
+        <h2>До 30% на бестселлеры</h2>
+        <p>Специальные цены на популярные издания в каталоге.</p>
+        <a class="promo-link" href="{% url 'product_list' %}">Смотреть скидки <span>→</span></a>
+      </div>
+      <strong class="promo-mark">-30%</strong>
+    </article>
+  </div>
+</section>
+<section class="features"><div class="container features-grid"><div><b>✓</b><h3>Только оригиналы</h3><p>Проверенные издания и качество.</p></div><div><b>₽</b><h3>Удобная оплата</h3><p>Понятные цены без сюрпризов.</p></div><div><b>→</b><h3>Быстрая доставка</h3><p>Бережно и точно в срок.</p></div><div><b>↻</b><h3>Простой возврат</h3><p>Комфорт на каждом этапе.</p></div></div></section>
+{% endblock %}

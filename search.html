@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{# Китеп издөө талаасына жана табылган китептердин жыйынтыктарына жооп берет. #}
+{% block title %}Поиск книг — Чилистен{% endblock %}
+{% block content %}
+<section class="inner-hero search-hero">
+  <div class="container inner-hero-content">
+    <span class="kicker">Поиск по библиотеке</span>
+    <h1>{% if query %}Результаты для «{{ query }}»{% else %}Найдите книгу для следующей истории{% endif %}</h1>
+    <p>Ищите по названию, описанию или ключевому слову — нужная книга может быть совсем рядом.</p>
+    <form class="premium-search" method="get">
+      <span>⌕</span>
+      <input name="q" value="{{ query }}" type="search" placeholder="Название книги или ключевое слово…" autofocus aria-label="Поиск книг">
+      <button type="submit">Найти книгу →</button>
+    </form>
+  </div>
+</section>
+<section class="section search-results-page new-style-books" id="new-books">
+  <div class="container">
+    <div class="inner-section-heading">
+      <div><span>Библиотека</span><h2>{% if query %}Найденные книги{% else %}Начните поиск{% endif %}</h2></div>
+      {% if query %}<b>{{ results|length }} результатов</b>{% endif %}
+    </div>
+    <div class="book-grid">{% for book in results %}{% include 'app/_book_card.html' %}{% empty %}<div class="premium-empty"><span>⌕</span><h2>{% if query %}Ничего не найдено{% else %}Введите запрос{% endif %}</h2><p>Попробуйте другое название или более короткое ключевое слово.</p><a href="{% url 'book_list' %}">Открыть весь каталог →</a></div>{% endfor %}</div>
+  </div>
+</section>
+{% endblock %}

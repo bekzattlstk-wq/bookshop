@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{# Колдонуучу тандап сактаган китептердин «Избранные» барагына жооп берет. #}
+{% block title %}Избранное — Чилистен{% endblock %}
+{% block content %}
+<section class="favorites-hero">
+  <div class="container">
+    <span class="kicker">Ваша личная коллекция</span>
+    <h1>Избранные книги</h1>
+    <p>Все истории, которые вы сохранили, собраны здесь.</p>
+  </div>
+</section>
+<section class="section favorites-page">
+  <div class="container">
+    <div class="favorites-heading">
+      <div><span>Сохранённые книги</span><h2>Ваш выбор</h2></div>
+      <b><span id="favorites-page-count">0</span> книг</b>
+    </div>
+    <div class="favorites-grid" id="favorites-grid"></div>
+    <div class="favorites-empty" id="favorites-empty" hidden>
+      <span>☆</span>
+      <h2>Здесь пока пусто</h2>
+      <p>Нажмите «Избранное» под понравившейся книгой — она появится на этой странице.</p>
+      <a href="{% url 'book_list' %}">Перейти в каталог →</a>
+    </div>
+  </div>
+</section>
+{% endblock %}

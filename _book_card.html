@@ -1,0 +1,23 @@
+{# Каталогдордо бир китептин мукабасы, маалыматы жана аракет баскычтары көрсөтүлгөн карточкага жооп берет. #}
+<article class="book-card">
+  <a class="cover" href="{% url 'book_detail' book.slug %}">
+    {% if book.image %}<img src="{{ book.image.url }}" alt="Обложка книги «{{ book.title }}»">
+    {% else %}<span class="no-cover"><b>{{ book.title|first|upper }}</b><small>BookSpace</small></span>{% endif %}
+  </a>
+  <div class="book-info">
+    <span class="label">Книга</span>
+    <h3><a href="{% url 'book_detail' book.slug %}">{{ book.title }}</a></h3>
+    <div class="book-genres">
+      {% for genre in book.genres.all %}
+        <span>{{ genre.name }}</span>
+      {% empty %}
+        <span>Без жанра</span>
+      {% endfor %}
+    </div>
+    <p>{{ book.content|striptags|truncatewords:18 }}</p>
+    <div class="book-meta"><span>{{ book.created_at|date:"d.m.Y" }}</span><a href="{% url 'book_detail' book.slug %}">Подробнее →</a></div>
+    <div class="social-actions">
+      <button class="icon-action favorite-btn compact-book-action" type="button" data-favorite-id="book-{{ book.id }}" data-title="{{ book.title }}" data-url="{% url 'book_detail' book.slug %}" aria-label="Добавить в избранное" title="Добавить в избранное"><span class="favorite-icon" aria-hidden="true">♡</span></button>
+    </div>
+  </div>
+</article>
