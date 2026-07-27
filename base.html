@@ -1,0 +1,119 @@
+{% load static %}
+{# Бардык барактар үчүн жалпы header, бургер-меню, корзина, сатып алуу терезеси, footer жана негизги түзүлүшкө жооп берет. #}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Чилистен{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}?v=20260726-01">
+</head>
+<body>
+<header class="header">
+  <div class="header-top">
+    <div class="container header-info">
+      <a class="logo" href="{% url 'home' %}"><b><img src="{% static 'images/mantis-logo.png' %}" alt=""></b><span>Чилистен<small>Интернет-магазин книг</small></span></a>
+      <a class="cart-info cart-open" href="#cart-drawer"><i>🛒</i><span><b>Корзина: <em id="cart-count">0</em></b><small>Открыть корзину</small></span></a>
+      <button class="menu-btn" type="button" aria-label="Открыть меню" aria-expanded="false">☰</button>
+    </div>
+  </div>
+  <div class="nav-bar">
+    <div class="container nav">
+      <div class="quick-nav">
+        <a href="{% url 'new_books' %}"><span>✦</span>Новинки</a>
+        <a href="{% url 'book_list' %}"><span>▤</span>Каталог</a>
+        <button class="genre-menu-toggle" type="button" aria-expanded="false"><span>◈</span>Жанры <small>⌄</small></button>
+        <a href="{% url 'product_list' %}" aria-label="Магазин"><span>▦</span>Магазин</a>
+        <a href="{% url 'home' %}" aria-label="Главная"><span>⌂</span>Главная</a>
+      </div>
+      <nav class="menu">
+        <a href="{% url 'home' %}">Главная</a>
+        <a href="{% url 'new_books' %}">Новинки</a>
+        <a href="{% url 'book_list' %}">Каталог</a>
+        <a href="{% url 'product_list' %}">Магазин</a>
+        <a href="{% url 'about' %}">О проекте</a>
+        <a href="{% url 'contact' %}">Контакты</a>
+        <a class="mobile-only" href="{% url 'product_list' %}">Корзина (<span class="cart-count-copy">0</span>)</a>
+        <a class="favorites-menu-link" href="{% url 'favorites' %}">Избранное <b class="favorites-menu-count favorite-count-copy">0</b></a>
+        <div class="menu-auth">
+          {% if user.is_authenticated %}
+            <span class="menu-user">{% if user.is_staff %}Администратор{% else %}Пользователь{% endif %}: <b>{{ user.username }}</b></span>
+            {% if user.is_staff %}
+              <form class="quiet-delete-all global-delete-all" method="post" action="{% url 'products_delete_all' %}" onsubmit="return confirm('Удалить все товары магазина? Это действие нельзя отменить.');">
+                {% csrf_token %}<button type="submit">Удалить все товары</button>
+              </form>
+            {% endif %}
+            <form method="post" action="{% url 'logout' %}">{% csrf_token %}<button class="menu-logout" type="submit">Выйти</button></form>
+          {% else %}
+            <a class="menu-login" href="{% url 'login' %}">Войти</a>
+            <a class="menu-register" href="{% url 'register' %}">Регистрация</a>
+          {% endif %}
+        </div>
+      </nav>
+      <form class="header-search" action="{% url 'search' %}" method="get"><input name="q" type="search" placeholder="Поиск книги"><button type="submit">⌕</button></form>
+    </div>
+    <div class="genre-dropdown" id="genre-dropdown">
+      <div class="container genre-dropdown-inner">
+        <a href="{% url 'book_list' %}">Все жанры</a>
+        <a href="{% url 'genre_books' %}?name=История">История</a>
+        <a href="{% url 'genre_books' %}?name=Психология">Психология</a>
+        <a href="{% url 'genre_books' %}?name=Саморазвитие">Саморазвитие</a>
+        <a href="{% url 'genre_books' %}?name=Драма">Драма</a>
+        <a href="{% url 'genre_books' %}?name=Мистика">Мистика</a>
+        <a href="{% url 'genre_books' %}?name=Научная фантастика">Научная фантастика</a>
+        <a href="{% url 'genre_books' %}?name=Приключения">Приключения</a>
+        <a href="{% url 'genre_books' %}?name=Фэнтези">Фэнтези</a>
+        <a href="{% url 'genre_books' %}?name=Поэзия">Поэзия</a>
+        <a href="{% url 'genre_books' %}?name=Роман">Роман</a>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="cart-overlay" data-cart-close></div>
+<aside class="cart-drawer" id="cart-drawer" aria-hidden="true" aria-label="Корзина">
+  <div class="cart-drawer-head">
+    <div><span>Ваш выбор</span><h2>Корзина</h2></div>
+    <button class="cart-close" type="button" data-cart-close aria-label="Закрыть корзину">×</button>
+  </div>
+  <div class="cart-drawer-list" id="cart-drawer-list"></div>
+  <div class="cart-drawer-footer">
+    <span>Выбрано книг: <b id="drawer-items-count">0</b></span>
+    <strong class="cart-total">Итого: <b id="drawer-total">0</b> сом</strong>
+    <button class="checkout-open" type="button" data-checkout-open>Оформить заказ →</button>
+    <a href="{% url 'product_list' %}">Добавить ещё книги</a>
+  </div>
+</aside>
+<div class="checkout-modal" id="checkout-modal" aria-hidden="true">
+  <button class="checkout-backdrop" type="button" data-checkout-close aria-label="Закрыть оформление заказа"></button>
+  <section class="checkout-card" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+    <button class="checkout-close" type="button" data-checkout-close aria-label="Закрыть">×</button>
+    <div class="checkout-brand"><img src="{% static 'images/mantis-logo.png' %}" alt=""><span>Быстрое оформление</span></div>
+    <h2 id="checkout-title">Оформить заказ</h2>
+    <p>Оставьте контакты — мы подтвердим заказ и уточним доставку.</p>
+    <form id="checkout-form">
+      <label>Ваше имя<input name="name" required autocomplete="name" placeholder="Введите имя"></label>
+      <label>Телефон<input name="phone" required inputmode="tel" autocomplete="tel" placeholder="+996 ___ ___ ___"></label>
+      <label>Способ получения<select name="delivery"><option>Доставка курьером</option><option>Самовывоз из магазина</option></select></label>
+      <label>Комментарий<textarea name="comment" rows="3" placeholder="Адрес или пожелания к заказу"></textarea></label>
+      <div class="checkout-summary"><span>К оплате</span><strong><b id="checkout-total">0</b> сом</strong></div>
+      <button class="checkout-submit" type="submit">Подтвердить заказ →</button>
+    </form>
+    <div class="checkout-success" hidden><span>✓</span><h3>Заказ принят</h3><p>Мы свяжемся с вами для подтверждения.</p><button type="button" data-checkout-close>Готово</button></div>
+  </section>
+</div>
+{% if messages %}<div class="messages">{% for message in messages %}<p>{{ message }}</p>{% endfor %}</div>{% endif %}
+<main>{% block content %}{% endblock %}</main>
+<footer>
+  <div class="container footer-grid">
+    <div><a class="logo light" href="{% url 'home' %}"><b><img src="{% static 'images/mantis-logo.png' %}" alt=""></b><span>Чилистен</span></a><p>Любимые книги — легко найти, приятно выбрать.</p></div>
+    <div><strong>Навигация</strong><a href="{% url 'home' %}">Главная</a><a href="{% url 'book_list' %}">Каталог</a><a href="{% url 'book_list' %}#genres">Жанры</a><a href="{% url 'new_books' %}">Новинки</a><a href="{% url 'product_list' %}">Магазин</a><a href="{% url 'about' %}">О проекте</a></div>
+    <div><strong>Помощь</strong><a href="{% url 'contact' %}">Контакты</a><a href="{% url 'search' %}">Поиск книг</a></div>
+  </div>
+  <div class="container copyright">© {% now "Y" %} Чилистен. Все права защищены.</div>
+</footer>
+<script src="{% static 'jss/main.js' %}?v=20260726-05"></script>
+</body>
+</html>
